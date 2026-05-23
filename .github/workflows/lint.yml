@@ -13,13 +13,17 @@ on:
   pull_request:
     branches: [master]
 
-permissions:
-  contents: read
-  pull-requests: write
+permissions: {}
 
 jobs:
   REUSE:
-    uses: dorssel/workflows/.github/workflows/REUSE.yml@main
+    uses: dorssel/workflows/.github/workflows/REUSE.yml@055b817a1d43824fe92c35961ccc450a0072fd44
+    permissions:
+      contents: read
+      pull-requests: write
 
   MegaLinterNET:
-    uses: dorssel/workflows/.github/workflows/mega-linter-dotnet.yml@main
+    uses: dorssel/workflows/.github/workflows/mega-linter-dotnet.yml@055b817a1d43824fe92c35961ccc450a0072fd44
+    permissions:
+      contents: read
+      pull-requests: write
