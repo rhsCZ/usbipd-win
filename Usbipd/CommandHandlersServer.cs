@@ -2,8 +2,6 @@
 //
 // SPDX-License-Identifier: GPL-3.0-only
 
-using System.Diagnostics;
-using Microsoft.Extensions.Hosting.WindowsServices;
 using static Usbipd.ConsoleTools;
 
 namespace Usbipd;
@@ -36,18 +34,11 @@ sealed partial class CommandHandlers : ICommandHandlers
             .UseWindowsService()
             .ConfigureAppConfiguration((context, builder) =>
             {
-                var defaultConfig = new Dictionary<string, string?>();
-                if (WindowsServiceHelpers.IsWindowsService())
+                var defaultConfig = new Dictionary<string, string?>
                 {
-                    // EventLog defaults to Warning, which is OK for .NET components,
-                    //      but we want to specifically log Information from our own component.
-                    defaultConfig.Add($"Logging:EventLog:LogLevel:{nameof(Usbipd)}", "Information");
-                }
-                else
-                {
-                    // When not running as a Windows service, do not spam the EventLog.
-                    defaultConfig.Add("Logging:EventLog:LogLevel:Default", "None");
-                }
+                    // Our ETW logger is smart enough to only log events when a listener is attached, so we can safely log Trace level events.
+                    { $"Logging:Etw:LogLevel:{nameof(Usbipd)}", "Trace" }
+                };
                 // set the above as defaults
                 _ = builder.AddInMemoryCollection(defaultConfig);
                 // allow overrides from the environment
@@ -55,14 +46,7 @@ sealed partial class CommandHandlers : ICommandHandlers
                 // allow overrides from the command line
                 _ = builder.AddCommandLine(args);
             })
-            .ConfigureLogging((context, logging) =>
-            {
-                if (!EventLog.SourceExists(Program.Product))
-                {
-                    EventLog.CreateEventSource(Program.Product, "Application");
-                }
-                _ = logging.AddEventLog(settings => settings.SourceName = Program.Product);
-            })
+            .ConfigureLogging((context, logging) => _ = logging.AddEtwLogger())
             .ConfigureServices((hostContext, services) =>
             {
                 _ = services.AddHostedService<Server>();
