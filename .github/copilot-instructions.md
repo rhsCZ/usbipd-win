@@ -52,3 +52,20 @@ and aligns with Section 2 and 3 patterns, approve the configuration change.
 * **Defer to Live CI Validation:**
 Treat the actual validation of build outputs and target executions as the responsibility of the real CI runtime
 pipeline. If the structural XML is valid, approve the pull request.
+
+## 5. Pull Request Review Guidelines
+
+When reviewing pull requests, adhere to the following rules regarding approvals and environment limitations:
+
+* **Focus on Static Analysis:**
+Base your review and approval decision strictly on code quality, logic, security, style, and static correctness visible in the diff.
+
+* **Assume CI Handles Validation:**
+Do not defer or withhold approval because you lack access to a runtime, compiler, or specific OS environment (such as Windows).
+Assume that automated CI pipelines handle `dotnet restore`, compilation, unit/integration tests, Native AOT/trimming verification, and publishing.
+
+* **Flag Risks Without Blocking:**
+If a PR introduces high-risk changes—such as major framework upgrades (.NET 11), `System.CommandLine` updates,
+platform-specific Windows code, or Native AOT/trimming configurations—note any potential edge cases or manual testing
+recommendations as informational comments, but do not mark the review as "Needs a closer look" or block approval solely
+due to environment unavailability.
