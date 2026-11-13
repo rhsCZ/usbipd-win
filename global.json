@@ -1,11 +1,11 @@
 {
   "sdk": {
-    "version": "10.0.403",
+    "version": "10.0.404",
     "allowPrerelease": false,
     "rollForward": "disable"
   },
   "msbuild-sdks": {
-    "MSTest.Sdk": "4.5.2",
+    "MSTest.Sdk": "4.5.3",
     "WixToolset.Sdk": "7.0.1"
   },
   "test": {
