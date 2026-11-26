@@ -6,11 +6,9 @@ SPDX-License-Identifier: GPL-3.0-only
 
 # usbipd-win
 
-[![Build](https://github.com/dorssel/usbipd-win/actions/workflows/build-installer.yml/badge.svg?branch=master)](https://github.com/dorssel/usbipd-win/actions/workflows/build-installer.yml?query=branch%3Amaster)
-[![CodeQL](https://github.com/dorssel/usbipd-win/actions/workflows/codeql-analysis.yml/badge.svg?branch=master)](https://github.com/dorssel/usbipd-win/actions/workflows/codeql-analysis.yml?query=branch%3Amaster)
-[![MegaLinter](https://github.com/dorssel/usbipd-win/actions/workflows/mega-linter.yml/badge.svg?branch=master)](https://github.com/dorssel/usbipd-win/actions/workflows/mega-linter.yml?query=branch%3Amaster)
 [![REUSE status](https://api.reuse.software/badge/github.com/dorssel/usbipd-win)](https://api.reuse.software/info/github.com/dorssel/usbipd-win)
 [![Codecov](https://codecov.io/gh/dorssel/usbipd-win/branch/master/graph/badge.svg?token=L0QI0AZRJI)](https://codecov.io/gh/dorssel/usbipd-win)
+[![OpenSSF Scorecard](https://img.shields.io/ossf-scorecard/github.com/dorssel/usbipd-win?label=openssf%20scorecard)](https://scorecard.dev/viewer/?uri=github.com/dorssel/usbipd-win)
 [![GitHub all releases](https://img.shields.io/github/downloads/dorssel/usbipd-win/total?logo=github)](https://github.com/dorssel/usbipd-win/releases)
 
 Windows software for sharing locally connected USB devices to other machines, including Hyper-V guests and WSL 2.

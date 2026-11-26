@@ -8,21 +8,23 @@
 .gitattributes   text
 .gitignore       text
 .editorconfig    text
-.json            text
-.license         text
 
-*.md    text
 *.txt   text
-
+*.md    text
+*.license       text
+*.json          text
 *.yml   text
+*.xml   text
 
 *.slnx  text
 *.snk   binary
 
-*.csproj   text
-*.cs       text eol=crlf
-*.props    text
-*.targets  text
+*.csproj    text
+*.cs        text eol=crlf
+*.props     text
+*.targets   text
+*.manifest	text
+*.rc2       text
 
 *.wixproj   text
 *.wxs       text
@@ -31,8 +33,6 @@
 *.png       binary
 *.xcf       binary
 
-usb.ids   text eol=lf
-
 # VBoxUsb drivers
 *.cat   binary
 *.inf   text eol=crlf
@@ -40,3 +40,8 @@ usb.ids   text eol=lf
 
 # Linux scripts
 *.sh   text eol=lf
+
+packages.lock.json  text linguist-generated
+usb.ids             text eol=lf
+
+CODEOWNERS  text

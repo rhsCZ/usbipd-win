@@ -1,0 +1,63 @@
+# SPDX-FileCopyrightText: 2026 Frans van Dorsselaer
+#
+# SPDX-License-Identifier: GPL-3.0-only
+
+---
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+
+name: SLSA
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+    inputs:
+      # checkov:skip=CKV_GHA_7: Required input for generating SLSA provenance for an existing release.
+      tag_name:
+        description: 'The existing release tag to generate provenance for (e.g., v1.2.0)'
+        required: true
+        type: string
+
+permissions: {}
+
+jobs:
+  slsa:
+    name: SLSA
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write
+      contents: write
+      attestations: write
+
+    steps:
+      - name: Download Existing Release Assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: ${{ github.event.release.tag_name || github.event.inputs.tag_name }}
+        run: |
+          gh release download "${RELEASE}" --dir release-artifacts --repo "${{ github.repository }}"
+
+      - name: Fail if provenance already exists
+        run: |
+          shopt -s nullglob
+          PROVENANCE=(release-artifacts/*.intoto.jsonl)
+          if [ ${#PROVENANCE[@]} -gt 0 ]; then
+            echo "Provenance file(s) already exist."
+            exit 1
+          fi
+
+      - name: Generate attestation
+        id: attest
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: release-artifacts/*
+
+      - name: Add attestation to Release Assets
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE: ${{ github.event.release.tag_name || github.event.inputs.tag_name }}
+          BUNDLE_PATH: ${{ steps.attest.outputs.bundle-path }}
+        run: |
+          cp "${BUNDLE_PATH}" multiple.intoto.jsonl
+          gh release upload "$RELEASE" multiple.intoto.jsonl --repo "${{ github.repository }}"

@@ -6,7 +6,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
 # yamllint disable rule:line-length
 
-name: MegaLinter .NET
+name: MegaLinter
 
 on:
   push:
@@ -21,7 +21,8 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  check:
+  analyze:
+    name: Analyze (MegaLinter)
     runs-on: ubuntu-latest
 
     permissions:
@@ -30,13 +31,13 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6.0.3
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
 
-      - name: MegaLinter .NET
+      - name: MegaLinter (.NET flavor)
         id: ml
-        uses: oxsecurity/megalinter/flavors/dotnet@0e3ce9b9c8c10effb9b269509cc47ca17cae31c7 # v9.5.0
+        uses: oxsecurity/megalinter/flavors/dotnet@f2fe8c1cba37091848df3e524066c8c23ef353ed # v10.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           MEGALINTER_CONFIG: .github/linters/.mega-linter.yml
@@ -44,7 +45,7 @@ jobs:
 
       - name: Upload artifacts
         if: always()
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: MegaLinter reports
           path: |
